@@ -116,24 +116,9 @@ const VocabularyCard = ({ item }) => {
         },
       }}>
       <CardContent>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: 1,
-          }}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: 1,
-            }}>
-            <Typography
-              variant="h5"
-              component="div"
-              sx={{ fontWeight: "bold" }}>
+        <Box sx={{ mb: 3 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
               {word}
             </Typography>
             <AnimatedIconButton
@@ -142,6 +127,9 @@ const VocabularyCard = ({ item }) => {
               aria-label="pronounce word">
               <VolumeUp />
             </AnimatedIconButton>
+          </Box>
+
+          <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 2 }}>
             <Chip
               label={pronunciation}
               size="small"
@@ -151,8 +139,7 @@ const VocabularyCard = ({ item }) => {
                 backgroundColor: alpha(theme.palette.primary.main, 0.1),
               }}
             />
-          </Box>
-          <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+            <Chip label={partOfSpeech} color="primary" size="small" />
             <Chip
               label={category}
               size="small"
@@ -165,39 +152,58 @@ const VocabularyCard = ({ item }) => {
               color="secondary"
               variant="outlined"
             />
-            <IconButton
-              color="error"
-              size="small"
-              onClick={() => setDeleteDialogOpen(true)}
-              aria-label="delete vocabulary">
-              <Delete />
-            </IconButton>
           </Box>
-        </Box>
 
-        <Chip
-          label={partOfSpeech}
-          color="primary"
-          size="small"
-          sx={{ mb: 2 }}
-        />
-
-        <Box sx={{ mb: 2 }}>
-          <Typography variant="body1" gutterBottom>
-            {definition}
-          </Typography>
-          <Typography
-            variant="body1"
-            color="text.secondary"
-            sx={{ fontStyle: "italic" }}>
-            {indonesianDefinition}
-          </Typography>
+          <Box sx={{ mb: 2 }}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <Box
+                sx={{
+                  bgcolor: alpha(theme.palette.primary.main, 0.05),
+                  p: 2,
+                  borderRadius: 1,
+                }}>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontWeight: "medium",
+                    color: theme.palette.primary.main,
+                    mb: 1,
+                  }}>
+                  Terjemahan:
+                </Typography>
+                <Typography variant="body1" sx={{ fontSize: "1.1rem" }}>
+                  {indonesianDefinition}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  bgcolor: alpha(theme.palette.secondary.main, 0.05),
+                  p: 2,
+                  borderRadius: 1,
+                }}>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontWeight: "medium",
+                    color: theme.palette.secondary.main,
+                    mb: 1,
+                  }}>
+                  Penjelasan:
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  {definition}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
         </Box>
 
         <Divider sx={{ mb: 2 }} />
 
-        <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: "bold" }}>
-          Examples:
+        <Typography
+          variant="subtitle1"
+          sx={{ mb: 2, fontWeight: "bold", color: theme.palette.primary.main }}>
+          Contoh Kalimat:
         </Typography>
 
         {examples.map((example, index) => (
@@ -208,36 +214,57 @@ const VocabularyCard = ({ item }) => {
               bgcolor: alpha(theme.palette.background.paper, 0.6),
               p: 2,
               borderRadius: 1,
-              border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
+              border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+              "&:hover": {
+                bgcolor: alpha(theme.palette.background.paper, 0.9),
+                transform: "translateX(4px)",
+                transition: "all 0.3s ease",
+              },
             }}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                mb: 1,
-              }}>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="body2" gutterBottom>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontWeight: "medium",
+                    color: theme.palette.primary.main,
+                  }}>
                   {example.english}
                 </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ fontStyle: "italic" }}>
-                  {example.indonesian}
-                </Typography>
+                <IconButton
+                  size="small"
+                  color="primary"
+                  onClick={() => handleSpeak(example.english)}
+                  aria-label="speak example">
+                  <VolumeUp fontSize="small" />
+                </IconButton>
               </Box>
-              <IconButton
-                size="small"
-                color="primary"
-                onClick={() => handleSpeak(example.english)}
-                aria-label="speak example">
-                <VolumeUp fontSize="small" />
-              </IconButton>
+              <Typography
+                variant="body1"
+                sx={{
+                  color: theme.palette.text.secondary,
+                  pl: 2,
+                  borderLeft: `2px solid ${alpha(
+                    theme.palette.primary.main,
+                    0.3
+                  )}`,
+                }}>
+                {example.indonesian}
+              </Typography>
             </Box>
           </Box>
         ))}
+
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+          <Button
+            variant="outlined"
+            color="error"
+            size="small"
+            startIcon={<Delete />}
+            onClick={() => setDeleteDialogOpen(true)}>
+            Hapus
+          </Button>
+        </Box>
 
         {(speakError || deleteError) && (
           <Alert severity="error" sx={{ mt: 2 }}>
