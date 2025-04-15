@@ -51,14 +51,24 @@ const StyledCard = styled(Card)(({ theme }) => ({
 
 const VocabularyCard = ({ item }) => {
   const {
-    word,
-    pronunciation,
-    partOfSpeech,
-    definition,
-    indonesianDefinition,
-    examples = [],
-    category,
-    level,
+    word = "Goodbye",
+    pronunciation = "ɡʊdˈbaɪ",
+    partOfSpeech = "exclamation/noun",
+    definition = "Kata yang digunakan untuk mengucapkan selamat tinggal atau perpisahan",
+    indonesianDefinition = "Sampai jumpa",
+    examples = [
+      {
+        english: "Goodbye, see you tomorrow!",
+        indonesian: "Sampai jumpa, sampai bertemu besok!",
+      },
+      {
+        english: "They waved goodbye to their friends",
+        indonesian:
+          "Mereka melambaikan tangan sampai jumpa kepada teman-teman mereka",
+      },
+    ],
+    category = "greetings",
+    level = "beginner",
   } = item;
 
   const [speakError, setSpeakError] = useState(null);
