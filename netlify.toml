@@ -1,9 +1,13 @@
 [build]
   command = "npm install --legacy-peer-deps && npm run build"
   publish = "build"
-  base = "english-learning-ai"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
